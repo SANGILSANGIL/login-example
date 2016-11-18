@@ -28,14 +28,14 @@ export default function navigator($document, $state) {
     }
 
     function goToSignUp() {
-        goTo("signUp");
+        goTo("tutorial.signUp");
     }
 
     function goToHome() {
-        goTo("home");
+        goTo("tutorial.home");
     }
 
     function goToLogin() {
-        goTo("login");
+        goTo("tutorial.login");
     }
 }

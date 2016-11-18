@@ -2,46 +2,25 @@ routes.$inject = ['$stateProvider'];
 
 export default function routes($stateProvider) {
     $stateProvider
-        .state('login', {
-            url: '/login',
+        .state('tutorial', {
+            abstract: true,
+            url: '/tutorial',
             views: {
-                'header': {
-                    templateUrl: 'pages/main/views/layouts/header.html'
-                },
-                'footer': {
-                    templateUrl: 'pages/main/views/layouts/footer.html'
-                },
                 'contents': {
-                    templateUrl: 'pages/main/views/layouts/main-contents.html'
+                    templateUrl: 'pages/main/views/contents/index.html'
                 }
             }
         })
-        .state('signUp', {
+        .state('tutorial.signUp', {
             url: '/signup',
-            views: {
-                'header': {
-                    templateUrl: 'pages/main/views/layouts/header.html'
-                },
-                'footer': {
-                    templateUrl: 'pages/main/views/layouts/footer.html'
-                },
-                'contents': {
-                    templateUrl: 'pages/main/views/layouts/signup-contents.html'
-                }
-            }
+            templateUrl: 'pages/main/views/contents/signup.html'
         })
-        .state('home', {
+        .state('tutorial.home', {
             url: '/home',
-            views: {
-                'header': {
-                    templateUrl: 'pages/main/views/layouts/header.html'
-                },
-                'footer': {
-                    templateUrl: 'pages/main/views/layouts/footer.html'
-                },
-                'contents': {
-                    templateUrl: 'pages/main/views/layouts/sub-contents.html'
-                }
-            }
+            templateUrl: 'pages/main/views/contents/home.html'
+        })
+        .state('tutorial.login', {
+            url: '/login',
+            templateUrl: 'pages/main/views/contents/login.html'
         });
 }
