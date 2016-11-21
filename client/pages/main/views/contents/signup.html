@@ -1,27 +1,44 @@
 <div id="sg-login-wrapper">
 
-    <div id="formWrapper" data-ng-if="!isLoggedIn()">
+    <div class="formWrapper" data-ng-if="!isLoggedIn()">
 
         <img src="/pages/main/assets/images/cropped-logo.png" style="width: 20%">
 
         <div id="logo"></div>
 
-        <form id="signUpForm" name="signUpForm" data-ng-submit="signUp(signUpForm)">
+        <form id="signUpForm" name="signUpForm" data-ng-submit="signUp(signUpForm)" novalidate>
 
             <div class="input-wrapper">
-                <input type="text" name="userNick" id="userNick" data-ng-model="form.nick" placeholder="닉네임" />
+                <input type="text" name="userNick" id="userNick" data-ng-model="form.nick"
+                       placeholder="닉네임" data-ng-maxlength="10" data-ng-minlength="2" required/>
+                <div class="sg-validate-msg"
+                     ng-show="signUpForm.userNick.$dirty && signUpForm.userNick.$invalid">
+                    <div>닉네임은 2자 이상 10자 이하여야 합니다.</div>
+                </div>
             </div>
 
             <div class="input-wrapper">
-                <input type="email" name="userEmail" id="userEmail" data-ng-model="form.email" placeholder="Email" />
+                <input type="email" name="userEmail"
+                       id="userEmail" data-ng-model="form.email"
+                       placeholder="이메일" required/>
+                <div class="sg-validate-msg"
+                     ng-show="signUpForm.userEmail.$dirty && signUpForm.userEmail.$invalid">
+                    <div>이메일 형식이 아닙니다.</div>
+                </div>
             </div>
 
             <div class="input-wrapper">
-                <input type="password" name="userPass" id="userPass" data-ng-model="form.pass" placeholder="Password" />
+                <input type="password" name="userPass" id="userPass"
+                       data-ng-model="form.pass" placeholder="Password"
+                       ng-pattern="/^.*(?=.{6,20})(?=.*[0-9])(?=.*[a-zA-Z]).*$/" required/>
+                <div class="sg-validate-msg"
+                     ng-show="signUpForm.userPass.$dirty && signUpForm.userPass.$invalid">
+                    <div>비밀번호는 반드시 영문과 숫자의 조합이어야 합니다.</div>
+                </div>
             </div>
 
             <div>
-                <button type="submit">{{'signUp' | translate}}</button>
+                <button type="submit" data-ng-disabled="signUpForm.$invalid">{{'signUp' | translate}}</button>
             </div>
             <div style="margin-top: 5px;">
                 <a href="javascript:;" data-ng-click="goToLogin()">{{'cancel' | translate}}</a>

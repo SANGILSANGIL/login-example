@@ -1,29 +1,32 @@
 <div id="sg-login-wrapper">
 
-    <div id="formWrapper" data-ng-if="!isLoggedIn()">
+    <div class="formWrapper" data-ng-if="!isLoggedIn()">
 
         <img src="/pages/main/assets/images/cropped-logo.png" style="width: 20%">
-
-        <div id="logo"></div>
 
         <form id="loginForm" name="loginForm" data-ng-submit="login(loginForm)" novalidate>
 
             <div class="input-wrapper">
-                <input type="email" name="userEmail" id="userEmail" data-ng-model="form.email" placeholder="이메일" required />
+                <input type="email" name="userEmail"
+                       id="userEmail" data-ng-model="form.email"
+                       data-ng-minlength="2"
+                       placeholder="이메일" required />
+                <div class="sg-validate-msg"
+                     ng-show="loginForm.userEmail.$dirty && loginForm.userEmail.$invalid">
+                    <div>이메일 형식이 아닙니다.</div>
+                </div>
             </div>
 
             <div class="input-wrapper">
-                <input-pass
-                        min-length="5"
-                        good-length="6"
-                        ng-flag="false"
-                        max-length="10"
-                        name="userPass"
-                        id="userPass"
-                        data-ng-model="form.pass"
-                        placeholder="Password"
-                        required></input-pass>
+                <input type="password" name="userPass"
+                       id="userPass" data-ng-model="form.pass"
+                       placeholder="비밀번호" ng-pattern="/^.*(?=.{6,20})(?=.*[0-9])(?=.*[a-zA-Z]).*$/" required />
+                <div class="sg-validate-msg"
+                     ng-show="loginForm.userPass.$dirty && loginForm.userPass.$invalid">
+                    <div>비밀번호는 반드시 영문과 숫자의 조합이어야 합니다.</div>
+                </div>
             </div>
+
             <div>
                 <button data-ng-disabled="loginForm.$invalid" type="submit">{{'login' | translate}}</button>
             </div>

@@ -1,10 +1,12 @@
-<div data-ng-if="isLoggedIn()">
-    <p>{{userInfo.email}}</p>
-    <p>{{userInfo.nick}}</p>
-    <p>{{userInfo.pass}}</p>
+<div class="formWrapper" data-ng-if="isLoggedIn()">
+    <div class="box">
+        <p>{{userInfo.email}}</p>
+        <p>{{userInfo.nick}}</p>
+        <p>{{userInfo.pass}}</p>
 
-    <button data-ng-click="logout()">로그아웃</button>
-    <div style="margin-top: 5px;">
-        <a href="javascript:;" data-ng-click="deleteUser()">{{'delete' | translate}}</a>
+        <button data-ng-click="logout()">로그아웃</button>
+        <div style="margin-top: 5px;">
+            <a href="javascript:;" data-ng-click="deleteUser()">{{'delete' | translate}}</a>
+        </div>
     </div>
 </div>

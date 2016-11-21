@@ -11,13 +11,18 @@ export default function MainCtrl($scope, $location, sessionManager, errorHandler
     $scope.deleteUser = deleteUser;
     $scope.goToSignUp = goToSignUp;
     $scope.goToLogin = goToLogin;
-    
+    $scope.goToHome = goToHome;
+
     function goToSignUp() {
         navigator.goToSignUp();
     }
 
     function goToLogin() {
         navigator.goToLogin();
+    }
+
+    function goToHome() {
+        navigator.goToHome();
     }
 
     function signUp(signUpForm) {
@@ -32,6 +37,10 @@ export default function MainCtrl($scope, $location, sessionManager, errorHandler
             sessionManager.signup(user, function (status, data) {
                 if (status == 201) {
                     console.log(data);
+                    userInfo.email = data.email;
+                    userInfo.nick = data.nick;
+                    userInfo.id = data.id;
+                    goToHome();
                 } else {
                     errorHandler.alertError(status, data);
                 }
@@ -67,12 +76,10 @@ export default function MainCtrl($scope, $location, sessionManager, errorHandler
         } else {
             console.log("로그인 실패");
         }
-    } 
+    }
 
     function deleteUser() {
         sessionManager.deleteUser(userInfo.id, function (status, data) {
-            console.log(userInfo.email);
-            console.log(status);
             if (status == 204) {
                 goToLogin();
             } else {
