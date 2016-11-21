@@ -67,7 +67,7 @@ export default function MainCtrl($scope, $location, sessionManager, errorHandler
         } else {
             console.log("로그인 실패");
         }
-    }
+    } 
 
     function deleteUser() {
         sessionManager.deleteUser(userInfo.id, function (status, data) {
