@@ -10,20 +10,23 @@
 
             <div class="input-wrapper">
                 <input type="text" name="userNick" id="userNick" data-ng-model="form.nick"
-                       placeholder="닉네임" data-ng-maxlength="10" data-ng-minlength="2" required/>
+                       placeholder="닉네임" data-ng-maxlength="10" data-ng-minlength="2"
+                       data-ng-keyup="checkDuplication('nick')" required/>
                 <div class="sg-validate-msg"
-                     ng-show="signUpForm.userNick.$dirty && signUpForm.userNick.$invalid">
-                    <div>닉네임은 2자 이상 10자 이하여야 합니다.</div>
+                     ng-show="signUpForm.userNick.$dirty && signUpForm.userNick.$invalid
+                                || duplicateFlag['nick'].error && signUpForm.userNick.$dirty">
+                    <div>{{getError(signUpForm.userNick.$error)}}</div>
                 </div>
             </div>
 
             <div class="input-wrapper">
                 <input type="email" name="userEmail"
                        id="userEmail" data-ng-model="form.email"
-                       placeholder="이메일" required/>
+                       data-ng-keyup="checkDuplication('email')" placeholder="이메일" required/>
                 <div class="sg-validate-msg"
-                     ng-show="signUpForm.userEmail.$dirty && signUpForm.userEmail.$invalid">
-                    <div>이메일 형식이 아닙니다.</div>
+                     ng-show="signUpForm.userEmail.$dirty && signUpForm.userEmail.$invalid
+                                || (duplicateFlag['email'].error && signUpForm.userEmail.$dirty)">
+                    <div>{{getError(signUpForm.userEmail.$error)}}</div>
                 </div>
             </div>
 
@@ -38,7 +41,7 @@
             </div>
 
             <div>
-                <button type="submit" data-ng-disabled="signUpForm.$invalid">{{'signUp' | translate}}</button>
+                <button type="submit" data-ng-disabled="signUpForm.$invalid || duplicateFlag['email'].error || duplicateFlag['nick'].error">{{'signUp' | translate}}</button>
             </div>
             <div style="margin-top: 5px;">
                 <a href="javascript:;" data-ng-click="goToLogin()">{{'cancel' | translate}}</a>

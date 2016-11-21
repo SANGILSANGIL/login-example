@@ -1,8 +1,18 @@
-export default function MainCtrl($scope, $location, sessionManager, errorHandler, metaManager, navigator) {
+export default function MainCtrl($scope, $location, sessionManager, errorHandler, metaManager, navigator, accountsManager) {
     $scope.isLoggedIn = {};
-    var form = $scope.form = {}
-    var userInfo = $scope.userInfo = {}
+    var form = $scope.form = {};
+    var userInfo = $scope.userInfo = {};
+    var tempKey = "";
 
+    $scope.duplicateFlag = {
+        nick: {
+            error: true
+        },
+        email: {
+            error: true
+        }
+    };
+    
     $scope.isLoggedIn = sessionManager.isLoggedIn;
 
     $scope.signUp = signUp;
@@ -14,6 +24,22 @@ export default function MainCtrl($scope, $location, sessionManager, errorHandler
     $scope.goToLogin = goToLogin;
     $scope.goToHome = goToHome;
     $scope.goToFindPass = goToFindPass;
+    $scope.checkDuplication = checkDuplication;
+    $scope.getError = getError;
+    
+    function getError(error) {
+        if(angular.isDefined(error)) {
+            if (error.required || error.minlength || error.maxlength) {
+                if (tempKey == 'nick') {
+                    return "닉네임은 2자 이상 10자 이하여야 합니다.";
+                } else {
+                    "이메일 형식이 아닙니다.";
+                }
+            } else {
+                return "이미 존재하는 " + (tempKey == 'nick' ? '닉네임' : '이메일') + "입니다.";
+            }
+        }
+    }
 
     function goToSignUp() {
         navigator.goToSignUp();
@@ -42,7 +68,6 @@ export default function MainCtrl($scope, $location, sessionManager, errorHandler
             };
             sessionManager.signup(user, function (status, data) {
                 if (status == 201) {
-                    console.log(data);
                     userInfo.email = data.email;
                     userInfo.nick = data.nick;
                     userInfo.id = data.id;
@@ -59,6 +84,7 @@ export default function MainCtrl($scope, $location, sessionManager, errorHandler
     function logout() {
         sessionManager.logout(function (status) {
             if (status == 204) {
+                $scope.form = {};
                 goToLogin();
             } else {
                 errorHandler.alertError(status);
@@ -70,7 +96,6 @@ export default function MainCtrl($scope, $location, sessionManager, errorHandler
         if(loginForm.$valid) {
             sessionManager.loginWithEmail(form.email, form.pass, function (status, data) {
                 if (status == 200) {
-                    $scope.form = {};
                     userInfo.email = data.email;
                     userInfo.nick = data.nick;
                     userInfo.id = data.id;
@@ -87,8 +112,6 @@ export default function MainCtrl($scope, $location, sessionManager, errorHandler
     function findPass() {
         var email = form.email;
 
-        console.log(metaManager.std.user.emailSenderTypeFindPass);
-
         sessionManager.sendFindPassEmail(email, function (status, data) {
             if (status == 200) {
                 $rootScope.$broadcast("core.session.callback", {
@@ -103,9 +126,28 @@ export default function MainCtrl($scope, $location, sessionManager, errorHandler
     function deleteUser() {
         sessionManager.deleteUser(userInfo.id, function (status, data) {
             if (status == 204) {
+                $scope.form = {};
                 goToLogin();
             } else {
                 errorHandler.alertError(status, data);
+            }
+        });
+    }
+
+    function checkDuplication (key) {
+
+        tempKey = key;
+
+        var body = {
+            key: key,
+            value: angular.copy(form[key])
+        };
+
+        accountsManager.checkDuplication(body, function (status, data) {
+            if (status == 204) {
+                $scope.duplicateFlag[key].error = false;
+            } else {
+                $scope.duplicateFlag[key].error = true;
             }
         });
     }
