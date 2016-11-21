@@ -22,5 +22,9 @@ export default function routes($stateProvider) {
         .state('tutorial.login', {
             url: '/login',
             templateUrl: 'pages/main/views/contents/login.html'
+        })
+        .state('tutorial.findPass', {
+            url: '/findpass',
+            templateUrl: 'pages/main/views/contents/find-pass.html'
         });
 }

@@ -8,13 +8,19 @@ export default function MainCtrl($scope, $location, sessionManager, errorHandler
     $scope.signUp = signUp;
     $scope.logout = logout;
     $scope.login = login;
+    $scope.findPass = findPass;
     $scope.deleteUser = deleteUser;
     $scope.goToSignUp = goToSignUp;
     $scope.goToLogin = goToLogin;
     $scope.goToHome = goToHome;
+    $scope.goToFindPass = goToFindPass;
 
     function goToSignUp() {
         navigator.goToSignUp();
+    }
+
+    function goToFindPass() {
+        navigator.goToFindPass();
     }
 
     function goToLogin() {
@@ -76,6 +82,22 @@ export default function MainCtrl($scope, $location, sessionManager, errorHandler
         } else {
             console.log("로그인 실패");
         }
+    }
+
+    function findPass() {
+        var email = form.email;
+
+        console.log(metaManager.std.user.emailSenderTypeFindPass);
+
+        sessionManager.sendFindPassEmail(email, function (status, data) {
+            if (status == 200) {
+                $rootScope.$broadcast("core.session.callback", {
+                    type: 'findPass'
+                });
+            } else {
+                errorHandler.alertError(status, data);
+            }
+        });
     }
 
     function deleteUser() {

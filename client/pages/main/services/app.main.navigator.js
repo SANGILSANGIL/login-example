@@ -7,6 +7,7 @@ export default function navigator($document, $state) {
     this.goToSignUp = goToSignUp;
     this.goToHome = goToHome;
     this.goToLogin = goToLogin;
+    this.goToFindPass = goToFindPass;
 
     var self = this;
 
@@ -37,5 +38,9 @@ export default function navigator($document, $state) {
 
     function goToLogin() {
         goTo("tutorial.login");
+    }
+
+    function goToFindPass() {
+        goTo("tutorial.findPass");
     }
 }
